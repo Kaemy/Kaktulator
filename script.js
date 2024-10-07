@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Vérification si les niveaux sont renseignés
         if (isNaN(plpfmembre) || isNaN(nivWild) || plpfmembre <= 0 || nivWild <= 0) {
-            resultCapture.innerText = "Veuillez indiquer un niveau valide pour le membre et le Pokémon sauvage.";
+            resultCapture.innerText = "Veuillez indiquer un niveau valide pour le pokémon du membre et le pokémon sauvage.";
             return; // On arrête le calcul ici
         }
 
