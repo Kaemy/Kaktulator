@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/style.css">
+    <title>Kapturator V2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body data-theme="light"> <!-- Ajoutez l'attribut data-theme -->
+    <div class="theme-toggle" id="theme-toggle">
+        <i id="dark-icon" class="fas fa-moon"></i> <!-- Icône pour le mode sombre -->
+        <i id="light-icon" class="fas fa-sun"></i> <!-- Icône pour le mode clair -->
+    </div>
+    <div class="container_kapturator">
+        <div class="content">
+            <h2><img src="./img/ball1.gif" class="imgball"> Kapturator © <img src="./img/ball2.gif" class="imgball"></h2>
+            <div class="formKaptur">
+                <form name="kapturatorform">
+                    <label for="typeball">Type de ball utilisée :</label>
+                    <select name="typeball">
+                        <option value="20">Poké ball</option>
+                        <option value="35">Super ball</option>
+                        <option value="50">Hyper ball</option>
+                        <option value="60">Ball Spéciales</option>
+                    </select><br>
+
+                    <label for="PLPFmembre">Niveau du membre (PLPF) :</label>
+                    <input type="number" name="PLPFmembre" value="20" min="1" max="100"><br>
+
+                    <label for="NivWild">Niveau du Pokémon sauvage :</label>
+                    <input type="number" name="NivWild" value="20" min="1" max="100"><br>
+
+                    <label for="StadeEvo">Stade d'évolution du Pokémon sauvage :</label>
+                    <select name="StadeEvo">
+                        <option value="20">Pokémon de base</option>
+                        <option value="10">Stade 1 ou sans évolution</option>
+                        <option value="0">Stade 2</option>
+                    </select><br>
+
+                    <label for="Spetype">Médaille de spécialiste :</label>
+                    <select name="Spetype">
+                        <option value="0">Pas de médaille</option>
+                        <option value="2">Médaille de Bronze</option>
+                        <option value="4">Médaille d'Argent</option>
+                        <option value="6">Médaille d'Or</option>
+                        <option value="8">Médaille de Platine</option>
+                    </select><br>
+
+                    <label for="BallUse">Nombre de ball déjà utilisées :</label>
+                    <input type="number" name="BallUse" value="0" min="0"><br>
+                </form>
+
+                <div class="button-group">
+                    <button id="generer" class="styled-button">Calculer</button>
+                    <button id="effacer" class="styled-button">Effacer</button>
+                </div>
+            </div>
+
+            <p id="resultcapture"></p>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>

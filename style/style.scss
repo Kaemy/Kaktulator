@@ -1,0 +1,211 @@
+// Variables pour les couleurs de thème
+$light-bg: #f5f5f5;
+$light-text: #333;
+$light-border: #ccc;
+
+$dark-bg: #1a1a1a;
+$dark-text: #eaeaea;
+$dark-border: #444;
+
+$primary-color: #4caf50; // Couleur principale pour les boutons
+$light-button-bg: $primary-color;
+$dark-button-bg: darken($primary-color, 10%);
+
+// Styles globaux pour les éléments
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    transform: scale(0.8);  // Réduction de la taille globale de 20%
+
+    .container_kapturator {
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        font-weight: bold;
+
+        img {
+            height: 50px;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+    }
+
+    .formKaptur {
+        display: flex;
+        flex-direction: column;
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        select,
+        input[type="number"] {
+            padding: 12px;
+            border: 1px solid $light-border;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+
+            &:focus {
+                border-color: $primary-color;
+                outline: none;
+                box-shadow: 0 0 5px rgba($primary-color, 0.5);
+            }
+        }
+
+        // Alignement des boutons et centrage
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px; // Espacement entre les boutons
+            margin-top: 20px;
+        }
+
+        // Style modernisé pour les boutons
+        .styled-button {
+            padding: 12px 20px;
+            border-radius: 50px; // Forme plus arrondie et moderne
+            background-color: $primary-color;
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+
+            &:hover {
+                background-color: darken($primary-color, 5%);
+                transform: translateY(-3px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            }
+
+            &:active {
+                transform: translateY(0); // Réduction de l'élévation sur clic
+                box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
+            }
+        }
+    }
+
+    #resultcapture {
+        margin-top: 30px;
+        padding: 15px;
+        border-radius: 4px;
+        background-color: rgba(76, 175, 80, 0.1);
+        border: 1px solid $light-border;
+    }
+}
+
+// Thèmes basés sur data-theme
+body[data-theme="dark"] {
+    background-color: $dark-bg;
+    color: $dark-text;
+
+    .container_kapturator {
+        background-color: $dark-bg;
+        color: $dark-text;
+        border-color: $dark-border;
+    }
+
+    select,
+    input {
+        background-color: #2b2b2b;
+        color: $dark-text;
+        border-color: $dark-border;
+
+        &:focus {
+            border-color: $primary-color;
+            box-shadow: 0 0 5px rgba($primary-color, 0.5);
+        }
+    }
+
+    .styled-button {
+        background-color: $dark-button-bg;
+        color: white;
+
+        &:hover {
+            background-color: darken($dark-button-bg, 10%);
+        }
+    }
+
+    #resultcapture {
+        background-color: rgba(76, 175, 80, 0.1);
+        border-color: $dark-border;
+    }
+}
+
+body[data-theme="light"] {
+    background-color: $light-bg;
+    color: $light-text;
+
+    .container_kapturator {
+        background-color: #ffffff;
+        color: $light-text;
+        border-color: $light-border;
+    }
+
+    select,
+    input {
+        background-color: #ffffff;
+        color: $light-text;
+        border-color: $light-border;
+
+        &:focus {
+            border-color: $primary-color;
+            box-shadow: 0 0 5px rgba($primary-color, 0.5);
+        }
+    }
+
+    .styled-button {
+        background-color: $light-button-bg;
+        color: white;
+
+        &:hover {
+            background-color: darken($light-button-bg, 10%);
+        }
+    }
+
+    #resultcapture {
+        background-color: rgba(76, 175, 80, 0.1);
+        border-color: $light-border;
+    }
+}
+
+// Styles pour l'icône de basculement du thème
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+    color: $light-text;
+
+    #dark-icon {
+        display: none; // caché en mode clair
+    }
+
+    &.dark {
+        #dark-icon {
+            display: inline;
+        }
+        #light-icon {
+            display: none; // caché en mode sombre
+        }
+    }
+}
