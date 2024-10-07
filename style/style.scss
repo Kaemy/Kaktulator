@@ -42,6 +42,16 @@ body {
         }
     }
 
+    @media (max-width: 600px) {
+        h2 img {
+            height: 30px; // Ajustez cette valeur selon vos besoins
+        }
+
+        h2 {
+            font-size: 1.5rem; // Réduisez la taille de police si nécessaire
+        }
+    }
+
     .formKaptur {
         display: flex;
         flex-direction: column;

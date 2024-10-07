@@ -25,6 +25,14 @@ body h2 img {
   vertical-align: middle;
   margin: 0 5px;
 }
+@media (max-width: 600px) {
+  body h2 img {
+    height: 30px;
+  }
+  body h2 {
+    font-size: 1.5rem;
+  }
+}
 body .formKaptur {
   display: flex;
   flex-direction: column;
