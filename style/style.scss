@@ -36,9 +36,9 @@ body {
         font-weight: bold;
 
         img {
-            height: 50px;
-            vertical-align: middle;
-            margin: 0 5px;
+            height: 40px;
+            vertical-align: baseline;
+            margin: 0 20px;
         }
     }
 
@@ -67,7 +67,7 @@ body {
             padding: 5px;
             border: 1px solid $light-border;
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 1rem;
             transition: border-color 0.3s;
 
