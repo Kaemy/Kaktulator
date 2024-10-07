@@ -7,7 +7,7 @@ $dark-bg: #1a1a1a;
 $dark-text: #eaeaea;
 $dark-border: #444;
 
-$primary-color: #4caf50; // Couleur principale pour les boutons
+$primary-color: #ff69f6; // Couleur principale pour les boutons 4caf50
 $light-button-bg: $primary-color;
 $dark-button-bg: darken($primary-color, 10%);
 
@@ -116,7 +116,7 @@ body {
         margin-top: 30px;
         padding: 15px;
         border-radius: 4px;
-        background-color: rgba(76, 175, 80, 0.1);
+        background-color: rgba(175, 76, 175, 0.1);
         border: 1px solid $light-border;
     }
 }
@@ -154,7 +154,7 @@ body[data-theme="dark"] {
     }
 
     #resultcapture {
-        background-color: rgba(76, 175, 80, 0.1);
+        background-color: rgba(175, 76, 137, 0.1);
         border-color: $dark-border;
     }
 }
@@ -191,7 +191,7 @@ body[data-theme="light"] {
     }
 
     #resultcapture {
-        background-color: rgba(76, 175, 80, 0.1);
+        background-color: rgba(175, 76, 137, 0.1);
         border-color: $light-border;
     }
 }

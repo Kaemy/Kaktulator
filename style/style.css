@@ -53,9 +53,9 @@ body .formKaptur input[type=number] {
 }
 body .formKaptur select:focus,
 body .formKaptur input[type=number]:focus {
-  border-color: #4caf50;
+  border-color: #ff69f6;
   outline: none;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  box-shadow: 0 0 5px rgba(255, 105, 246, 0.5);
 }
 body .formKaptur .button-group {
   display: flex;
@@ -66,7 +66,7 @@ body .formKaptur .button-group {
 body .formKaptur .styled-button {
   padding: 12px 20px;
   border-radius: 50px;
-  background-color: #4caf50;
+  background-color: #ff69f6;
   color: white;
   border: none;
   font-size: 1.2rem;
@@ -76,7 +76,7 @@ body .formKaptur .styled-button {
   transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
 }
 body .formKaptur .styled-button:hover {
-  background-color: #449d48;
+  background-color: #ff50f4;
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
 }
@@ -88,7 +88,7 @@ body #resultcapture {
   margin-top: 30px;
   padding: 15px;
   border-radius: 4px;
-  background-color: rgba(76, 175, 80, 0.1);
+  background-color: rgba(175, 76, 175, 0.1);
   border: 1px solid #ccc;
 }
 
@@ -109,18 +109,18 @@ body[data-theme=dark] input {
 }
 body[data-theme=dark] select:focus,
 body[data-theme=dark] input:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  border-color: #ff69f6;
+  box-shadow: 0 0 5px rgba(255, 105, 246, 0.5);
 }
 body[data-theme=dark] .styled-button {
-  background-color: #3d8b40;
+  background-color: #ff36f3;
   color: white;
 }
 body[data-theme=dark] .styled-button:hover {
-  background-color: #2d682f;
+  background-color: #ff03f0;
 }
 body[data-theme=dark] #resultcapture {
-  background-color: rgba(76, 175, 80, 0.1);
+  background-color: rgba(175, 76, 137, 0.1);
   border-color: #444;
 }
 
@@ -141,18 +141,18 @@ body[data-theme=light] input {
 }
 body[data-theme=light] select:focus,
 body[data-theme=light] input:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  border-color: #ff69f6;
+  box-shadow: 0 0 5px rgba(255, 105, 246, 0.5);
 }
 body[data-theme=light] .styled-button {
-  background-color: #4caf50;
+  background-color: #ff69f6;
   color: white;
 }
 body[data-theme=light] .styled-button:hover {
-  background-color: #3d8b40;
+  background-color: #ff36f3;
 }
 body[data-theme=light] #resultcapture {
-  background-color: rgba(76, 175, 80, 0.1);
+  background-color: rgba(175, 76, 137, 0.1);
   border-color: #ccc;
 }
 
