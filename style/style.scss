@@ -25,6 +25,7 @@ body {
     background-color: $light-bg;
     color: $light-text;
     transition: background-color 0.3s ease, color 0.3s ease;
+    transform: scale(0.85);
 
     .container_kapturator {
         max-width: 600px; // Increased width for a better layout
@@ -343,7 +344,7 @@ body[data-theme="dark"] {
 }
 
 // Media Queries for smaller screens
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     #randomizer-container {
         padding: 15px;
         max-width: 100%;
