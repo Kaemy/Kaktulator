@@ -1,55 +1,84 @@
-// Variables pour les couleurs de thème
+// Variables for theme colors
+$primary-color: #ff69f6;
+
 $light-bg: #f5f5f5;
 $light-text: #333;
 $light-border: #ccc;
+$light-back: #f5f5f5;
+$light-back-text: #333;
 
 $dark-bg: #1a1a1a;
 $dark-text: #eaeaea;
 $dark-border: #444;
+$dark-back: #ff36f329;
+$dark-back-text: #eaeaea;
 
-$primary-color: #ff69f6; // Couleur principale pour les boutons 4caf50
+
 $light-button-bg: $primary-color;
 $dark-button-bg: darken($primary-color, 10%);
 
-// Styles globaux pour les éléments
+// Global styles for elements
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: $light-bg;
+    color: $light-text;
     transition: background-color 0.3s ease, color 0.3s ease;
-    transform: scale(0.85);  // Réduction de la taille globale de 20%
 
     .container_kapturator {
-        max-width: 500px;
+        max-width: 600px; // Increased width for a better layout
         margin: 10px auto;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        transition: box-shadow 0.3s ease, background-color 0.3s ease;
+        padding: 20px; // Increased padding for a more spacious feel
+        border-radius: 12px; // Slightly larger border radius for modern look
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); // Softer shadow
+        background-color: $light-bg;
     }
 
     h2 {
         text-align: center;
-        margin-bottom: 20px;
-        margin-top: 0px;
-        font-size: 2rem;
+        margin: 0 0 20px;
+        font-size: 1.5rem; // Increased font size for prominence
         font-weight: bold;
 
         img {
-            height: 40px;
+            height: 30px; // Increased height for images
             vertical-align: baseline;
-            margin: 0 20px;
+            margin: 0 15px; // Adjusted margins
         }
     }
 
-    @media (max-width: 600px) {
-        h2 img {
-            height: 35px; // Ajustez cette valeur selon vos besoins
-        }
+    .tabs {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px; // Added space below tabs
 
-        h2 {
-            font-size: 1.5rem; // Réduisez la taille de police si nécessaire
+        .tab-button {
+            padding: 12px 20px; // Increased padding for a more button-like feel
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem; // Slightly larger font size
+            transition: background-color 0.3s, color 0.3s, transform 0.3s; // Added transform transition
+            border-radius: 8px; // Rounded corners
+
+            &.active {
+                background-color: $primary-color;
+                color: white;
+                transform: scale(1.05); // Slightly grow on active
+            }
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+                transform: scale(1.03); // Slight grow on hover
+            }
         }
+    }
+
+    .tab-content {
+        display: none; // Hidden by default
+        transition: opacity 0.3s ease; // Smooth transition when showing/hiding
     }
 
     .formKaptur {
@@ -59,16 +88,16 @@ body {
         label {
             margin-bottom: 10px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem; // Increased font size for labels
+            color: $light-text;
         }
 
-        select,
-        input[type="number"] {
-            padding: 5px;
+        select, input[type="number"] {
+            padding: 10px; // Increased padding for comfort
             border: 1px solid $light-border;
-            border-radius: 10px;
+            border-radius: 8px; // Rounded borders for inputs
             margin-bottom: 20px;
-            font-size: 1rem;
+            font-size: 1.1rem; // Slightly larger font size
             transition: border-color 0.3s;
 
             &:focus {
@@ -78,145 +107,259 @@ body {
             }
         }
 
-        // Alignement des boutons et centrage
-        .button-group {
-            display: flex;
-            justify-content: center;
-            gap: 60px; // Espacement entre les boutons
-            margin-top: 5px;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px; // Adjusted spacing between buttons
+        margin-top: 10px;
+    }
+
+    .styled-button {
+        padding: 12px 25px; // Increased button size
+        border-radius: 50px;
+        background-color: $primary-color;
+        color: white;
+        border: none;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+
+        &:hover {
+            background-color: darken($primary-color, 5%);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
         }
 
-        // Style modernisé pour les boutons
-        .styled-button {
-            padding: 12px 20px;
-            border-radius: 50px;
-            background-color: $primary-color;
-            color: white;
-            border: none;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
-
-            &:hover {
-                background-color: darken($primary-color, 5%);
-                transform: translateY(-3px);
-                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-            }
-
-            &:active {
-                transform: translateY(0); // Réduction de l'élévation sur clic
-                box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
-            }
+        &:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
         }
     }
 
     #resultcapture {
-        margin-top: 15px;
-        padding: 10px;
-        border-radius: 10px;
+        margin-top: 20px; // Increased spacing above the result area
+        padding: 15px;
+        border-radius: 12px;
         background-color: rgba(175, 76, 175, 0.1);
         border: 1px solid $light-border;
-        line-height: 30px;
+        line-height: 1.5; // Improved line height for readability
     }
 }
 
-// Thèmes basés sur data-theme
+// Dark theme based on data-theme
 body[data-theme="dark"] {
     background-color: $dark-bg;
     color: $dark-text;
 
     .container_kapturator {
         background-color: $dark-bg;
-        color: $dark-text;
-        border-color: $dark-border;
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
     }
 
-    select,
-    input {
-        background-color: #2b2b2b;
+    .tabs .tab-button.active {
+        background-color: darken($primary-color, 10%);
+    }
+
+    .tabs .tab-button {
+        color: $dark-text; // Ensuring visibility in dark mode
+    }
+
+    select, input[type="number"] {
+        background-color: $dark-bg;
+        border: 1px solid $dark-border;
         color: $dark-text;
-        border-color: $dark-border;
 
         &:focus {
             border-color: $primary-color;
-            box-shadow: 0 0 5px rgba($primary-color, 0.5);
-        }
-    }
-
-    .styled-button {
-        background-color: $dark-button-bg;
-        color: white;
-
-        &:hover {
-            background-color: darken($dark-button-bg, 10%);
         }
     }
 
     #resultcapture {
-        background-color: rgba(175, 76, 137, 0.1);
-        border-color: $dark-border;
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid $dark-border;
     }
 }
 
-body[data-theme="light"] {
-    background-color: $light-bg;
-    color: $light-text;
-
-    .container_kapturator {
-        background-color: #ffffff;
-        color: $light-text;
-        border-color: $light-border;
-    }
-
-    select,
-    input {
-        background-color: #ffffff;
-        color: $light-text;
-        border-color: $light-border;
-
-        &:focus {
-            border-color: $primary-color;
-            box-shadow: 0 0 5px rgba($primary-color, 0.5);
-        }
-    }
-
-    .styled-button {
-        background-color: $light-button-bg;
-        color: white;
-
-        &:hover {
-            background-color: darken($light-button-bg, 10%);
-        }
-    }
-
-    #resultcapture {
-        background-color: rgba(175, 76, 137, 0.1);
-        border-color: $light-border;
-    }
-}
-
-// Styles pour l'icône de basculement du thème
+// Theme toggle button
 .theme-toggle {
     position: fixed;
     top: 20px;
     right: 20px;
-    font-size: 24px;
     cursor: pointer;
-    z-index: 1000;
-    color: $light-text;
+    z-index: 10;
 
-    #dark-icon {
-        display: none; // caché en mode clair
+    i {
+        font-size: 24px;
+        color: $primary-color;
+        transition: transform 0.2s;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+}
+
+// ONGLET 1 - KAPTURATOR
+#kapturator-container {
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#kapturator-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.input-container label {
+    flex: 1;
+    margin-right: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: right;
+}
+
+.input-container input,
+.input-container select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    transition: border 0.3s;
+}
+
+.input-container2 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: space-around;
+}
+
+.input-container2 label {
+    flex: 1;
+    margin-right: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: right;
+}
+
+.input-container2 input,
+.input-container2 select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    transition: border 0.3s;
+}
+
+#kapturator-result {
+    background-color: $dark-back;
+    padding: 15px;
+    margin-top: 20px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+
+// ONGLET 2 - KAKTULATOR
+#kaktulator-container {
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#damage-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.input-container label {
+    flex: 1;
+    margin-right: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: right;
+}
+
+.input-container input,
+.input-container select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    transition: border 0.3s;
+}
+
+#damage-result {
+    background-color: $dark-back;
+    padding: 15px;
+    margin-top: 20px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+// ONGLET 3 - RANDOM
+#randomizer-container {
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#custom-range input {
+    flex: 1;
+}
+
+#random-result {
+    background-color: $dark-back;
+    padding: 15px;
+    margin-top: 20px;
+    text-align: center;
+    border-radius: 4px;
+}
+
+// Media Queries for smaller screens
+@media (max-width: 768px) {
+    #randomizer-container {
+        padding: 15px;
+        max-width: 100%;
     }
 
-    &.dark {
-        #dark-icon {
-            display: inline;
-        }
-        #light-icon {
-            display: none; // caché en mode sombre
-        }
+    #custom-range {
+        flex-direction: column;
+    }
+
+    #custom-range input {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    #button-container button {
+        margin-right: 0;
+        margin-bottom: 10px;
     }
 }

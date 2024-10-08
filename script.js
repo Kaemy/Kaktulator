@@ -1,133 +1,420 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Sélection des éléments du DOM
-    const form = document.forms['kapturatorform'];
-    const generateButton = document.getElementById("generer");
-    const resetButton = document.getElementById("effacer");
-    const resultCapture = document.getElementById("resultcapture");
+// Sélection des éléments du DOM pour le changement de thème
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+const darkIcon = document.getElementById('dark-icon');
+const lightIcon = document.getElementById('light-icon');
 
-    // Initialisation du thème
-    const toggleTheme = document.querySelector('.theme-toggle');
-    const body = document.body;
-
-    // Vérifier et appliquer le thème enregistré dans localStorage
-    if (localStorage.getItem('theme') === 'light') {
-        body.setAttribute('data-theme', 'light');
+// Fonction pour appliquer le thème en fonction de la sélection
+function applyTheme(theme) {
+    if (theme === 'dark') {
+        body.setAttribute('data-theme', 'dark');
+        darkIcon.style.display = 'none';
+        lightIcon.style.display = 'block';
     } else {
-        body.setAttribute('data-theme', 'dark'); // Par défaut, le thème sombre
+        body.setAttribute('data-theme', 'light');
+        darkIcon.style.display = 'block';
+        lightIcon.style.display = 'none';
+    }
+}
+
+// Vérifier si un thème est déjà stocké dans le localStorage, sinon appliquer le thème sombre par défaut
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+    applyTheme(savedTheme);
+} else {
+    // Appliquer le thème sombre par défaut
+    applyTheme('dark');
+    localStorage.setItem('theme', 'dark'); // Stocker la préférence dans le localStorage
+}
+
+// Basculer le thème lors du clic sur l'icône
+themeToggle.addEventListener('click', () => {
+    const currentTheme = body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(newTheme);
+    localStorage.setItem('theme', newTheme); // Sauvegarder le nouveau thème dans localStorage
+});
+
+
+// Gérer les onglets
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const activeTab = button.getAttribute('data-tab');
+
+        tabButtons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        button.classList.add('active');
+
+        tabContents.forEach(content => {
+            content.style.display = content.id === activeTab ? 'block' : 'none';
+        });
+    });
+});
+
+function openTab(event, tabId) {
+    // Masquer tout le contenu des onglets
+    const tabContents = document.querySelectorAll('.tab-content');
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+    tabContents.forEach(tabContent => {
+        tabContent.style.display = 'none'; // Cacher tout le contenu
+    });
+
+    // Retirer la classe active de tous les boutons
+    tabButtons.forEach(tabButton => {
+        tabButton.classList.remove('active');
+    });
+
+    // Afficher le contenu sélectionné
+    const selectedTabContent = document.getElementById(tabId);
+    selectedTabContent.style.display = 'block';
+
+    // Ajouter la classe active au bouton sélectionné
+    event.currentTarget.classList.add('active');
+}
+
+// Afficher le premier onglet par défaut au chargement
+window.addEventListener('DOMContentLoaded', () => {
+    const firstTabButton = document.querySelector('.tab-button');
+    const firstTabContent = document.querySelector('.tab-content');
+
+    if (firstTabButton && firstTabContent) {
+        firstTabButton.classList.add('active');
+        firstTabContent.style.display = 'block';
+    }
+});
+
+
+// Logique de calcul
+document.getElementById('generer').addEventListener('click', () => {
+    // Récupération des valeurs
+    const typeBall = parseInt(document.getElementById("typeball").value);
+    const PLPFmembre = parseInt(document.getElementById("PLPFmembre").value);
+    const NivWild = parseInt(document.getElementById("NivWild").value);
+    const stadeEvo = parseInt(document.getElementById("stadeEvo").value);
+    const Spetype = parseInt(document.getElementById("Spetype").value);
+    const ballUse = parseInt(document.getElementById("BallUse").value);
+
+    // Vérifier si PLPFmembre et NivWild ont des valeurs valides
+    if (isNaN(PLPFmembre) || PLPFmembre < 1 || isNaN(NivWild) || NivWild < 1) {
+        document.getElementById('kapturator-result').innerHTML = `
+            Veuillez indiquer des valeurs valides pour le niveau du membre et le niveau du Pokémon sauvage.
+        `;
+        return; // Arrête le calcul ici si les valeurs ne sont pas valides
     }
 
-    // Fonction pour changer de thème
-    toggleTheme.addEventListener('click', () => {
-        const currentTheme = body.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        body.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme); // Enregistrer le nouveau thème dans localStorage
-        updateIcons(newTheme); // Mise à jour des icônes
-    });
+    // Vérifier si le niveau du Pokémon sauvage est supérieur au PLPF du membre de 6 niveaux ou plus
+    if (NivWild >= PLPFmembre + 6) {
+        document.getElementById('kapturator-result').innerHTML = `
+            La capture du Pokémon échoue car il est trop puissant par rapport à votre niveau.
+        `;
+        return; // Arrête le calcul ici si la capture échoue automatiquement
+    }
 
-    // Vérification des icônes de thème
-    function updateIcons(theme) {
-        const darkIcon = document.getElementById("dark-icon");
-        const lightIcon = document.getElementById("light-icon");
-        if (theme === "dark") {
-            darkIcon.style.display = "inline"; // Afficher l'icône de lune
-            lightIcon.style.display = "none"; // Cacher l'icône de soleil
+    // Formule de calcul
+    let result = (PLPFmembre + typeBall + NivWild - stadeEvo + Spetype) - ballUse;
+
+    // Limitation de la chance de capture à 100%
+    result = Math.min(result, 100);
+
+    // Affichage du résultat de la chance de capture
+    const randomValue = Math.floor(Math.random() * 100) + 1; // Tirage aléatoire entre 1 et 100
+    const captureSuccess = randomValue <= result; // Détermine si la capture réussit
+
+    // Affichage des résultats
+    document.getElementById('kapturator-result').innerHTML = `
+        Chance de capture : ${result}%<br>
+        Tirage aléatoire pour la capture : ${randomValue}<br><br>
+        ${captureSuccess ? 'Félicitations ! Le Pokémon est capturé !' : 'Pas de chance ! Le Pokémon s\'est échappé.'}
+    `;
+});
+
+// Logique d'effacement
+document.getElementById('effacer').addEventListener('click', () => {
+    document.getElementById('kapturator-form').reset(); // Réinitialise le formulaire
+    document.getElementById('kapturator-result').textContent = ''; // Réinitialiser le résultat
+});
+
+
+
+////// ONGLET 2 ////////
+document.getElementById("damage-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    // Récupérer les valeurs du formulaire
+    const level = parseInt(document.getElementById("level").value);
+    const attack = parseInt(document.getElementById("attack").value);
+    const power = parseInt(document.getElementById("power").value);
+    const defense = parseInt(document.getElementById("defense").value);
+    const resistance = parseFloat(document.getElementById("resistance").value);
+    const criticalRate = parseFloat(document.getElementById("critical-rate").value);
+    const accuracy = parseInt(document.getElementById("accuracy").value);
+    const effect = document.getElementById("effect").value;
+
+    // Gestion de l'affichage du taux de l'effet
+    const effectRate = effect !== "none" ? parseInt(document.getElementById("effect-rate").value) : 0;
+
+    // Tirage aléatoire pour la précision de l'attaque
+    const accuracyRoll = Math.random();
+    const randomAccuracyRoll = Math.floor(accuracyRoll * 100) + 1; // Convertir en entier entre 1 et 100
+
+    // Vérifier si l'attaque réussit (le tirage doit être inférieur ou égal à la précision)
+    const isHit = randomAccuracyRoll <= accuracy;
+
+    const resultDiv = document.getElementById("damage-result");
+
+    // Afficher le tirage de précision
+    resultDiv.innerHTML = `Random pour la précision : ${randomAccuracyRoll} <br>`;
+
+    // Si l'attaque échoue
+    if (!isHit) {
+        resultDiv.innerHTML += `(L'attaque échoue)<br>`;
+        return; // Arrêter le script ici si l'attaque échoue
+    }
+
+    // Si l'attaque réussit, vérifier si le coup critique est possible
+    let criticalMultiplier = 1;
+    let criticalMessage = ""; // Par défaut, rien n'est affiché pour les coups critiques
+
+    if (criticalRate > 0) { // Si le coup critique est possible
+        // Tirage pour le coup critique
+        const criticalRoll = Math.random();
+        const randomCriticalRoll = Math.floor(criticalRoll * 100) + 1; // Tirage entre 1 et 100
+        const isCriticalHit = criticalRoll < criticalRate;
+
+        // Afficher le tirage pour le coup critique
+        criticalMessage = `Random Coup Critique : ${randomCriticalRoll} `;
+
+        if (isCriticalHit) {
+            criticalMultiplier = 1.5; // Multiplier pour coup critique
+            criticalMessage += `<i>(Coup critique !)</i><br>`;
         } else {
-            darkIcon.style.display = "none"; // Cacher l'icône de lune
-            lightIcon.style.display = "inline"; // Afficher l'icône de soleil
+            criticalMessage += `<br>`;
         }
     }
 
-    // Calcul du pourcentage de capture
-    generateButton.addEventListener("click", () => {
-        // Récupération des valeurs du formulaire
-        const typeball = parseFloat(form.typeball.value); // Valeur de la Pokéball
-        const plpfmembre = parseFloat(form.PLPFmembre.value); // Niveau du membre (PLPF)
-        const nivWild = parseFloat(form.NivWild.value); // Niveau du Pokémon sauvage
-        const stadeEvo = parseFloat(form.StadeEvo.value); // Stade d'évolution du Pokémon
-        const spetype = parseFloat(form.Spetype.value); // Médaille de spécialiste
-        const balluse = parseFloat(form.BallUse.value); // Ball déjà utilisées
+    // Tirage pour l'effet secondaire si l'effet n'est pas "Aucun"
+    let effectMessage = "";
+    if (effect !== "none" && effectRate > 0) {
+        const effectRoll = Math.random();
+        const randomEffectRoll = Math.floor(effectRoll * 100) + 1; // Tirage entre 1 et 100
 
-        // Vérification si les niveaux sont renseignés
-        if (isNaN(plpfmembre) || isNaN(nivWild) || plpfmembre <= 0 || nivWild <= 0) {
-            resultCapture.innerText = "Veuillez indiquer un niveau valide pour le pokémon du membre et le pokémon sauvage.";
-            return; // On arrête le calcul ici
-        }
+        // Afficher le tirage pour l'effet
+        effectMessage += `Random pour l'effet : ${randomEffectRoll} `;
 
-        // Calcul de la différence de niveau entre le membre et le Pokémon sauvage
-        let niveauDiff = nivWild - plpfmembre; // Calculé à partir du niveau sauvage moins le niveau du membre
-
-        // Vérification de l'échec automatique si le Pokémon sauvage est supérieur de 6 niveaux ou plus
-        if (niveauDiff >= 6) {
-            resultCapture.innerText = "La capture du Pokémon est impossible en raison de son niveau trop élevé par rapport à vos compétences. Entraînez-vous avant de tenter ce genre d'actions !";
-            return; // On arrête le calcul ici car la capture échoue automatiquement
-        }
-
-        // Calcul du bonus de différence de niveau (après avoir géré l'échec automatique)
-        let niveauBonus = 0;
-        if (niveauDiff >= 4 && niveauDiff <= 5) {
-            niveauBonus = -5; // Sauvage PLPF +4 jusqu'à +5
-        } else if (niveauDiff >= 0 && niveauDiff <= 3) {
-            niveauBonus = 0; // Sauvage PLPF +0 jusqu'à +3
-        } else if (niveauDiff >= -10 && niveauDiff <= -1) {
-            niveauBonus = 5; // Sauvage PLPF -1 jusqu'à -10
-        } else if (niveauDiff >= -20 && niveauDiff <= -11) {
-            niveauBonus = 10; // Sauvage PLPF -11 jusqu'à -20
+        if (randomEffectRoll <= effectRate) {
+            switch (effect) {
+                case "burn":
+                    effectMessage += `(Effet déclenché : Brûlure)<br>`;
+                    break;
+                case "paralysis":
+                    effectMessage += `(Effet déclenché : Paralysie)<br>`;
+                    break;
+                case "poison":
+                    effectMessage += `(Effet déclenché : Empoisonnement)<br>`;
+                    break;
+                case "fear":
+                    effectMessage += `(Effet déclenché : Peur)<br>`;
+                    break;
+                case "freeze":
+                    effectMessage += `(Effet déclenché : Gel)<br>`;
+                    break;
+                case "confusion":
+                    effectMessage += `(Effet déclenché : Confusion)<br>`;
+                    break;
+                default:
+                    effectMessage += "";
+            }
         } else {
-            niveauBonus = 15; // Sauvage PLPF -21 ou plus
+            effectMessage += `<i>(Pas d'effet)</i><br>`;
+        }
+    }
+
+    // Appliquer la formule des dégâts
+    let damage = ((((level * 2 / 5 + 2) * attack * power / defense) / 50) + 2) * resistance * criticalMultiplier;
+
+    // Arrondir les dégâts correctement
+    damage = Math.round(damage);  // Arrondit selon les règles classiques
+
+    // Afficher le résultat
+    resultDiv.innerHTML += `
+        ${criticalMessage}
+        ${effectMessage}<br>
+        PV perdus : ${Math.max(0, Math.floor(damage))}
+    `;
+});
+
+// Gestion de l'affichage du champ du taux d'effet en fonction de la sélection de l'effet secondaire
+document.getElementById("effect").addEventListener("change", function() {
+    const effectValue = this.value;
+    const effectRateContainer = document.getElementById("effect-rate-container");
+    
+    if (effectValue === "none") {
+        effectRateContainer.style.display = "none"; // Cacher le champ du taux si "Aucun" est sélectionné
+        document.getElementById("effect-rate").removeAttribute("required"); // Rendre non obligatoire
+    } else {
+        effectRateContainer.style.display = "flex"; // Afficher le champ du taux si un effet est sélectionné
+        document.getElementById("effect-rate").setAttribute("required", "required"); // Rendre obligatoire
+    }
+});
+
+// Réinitialiser les résultats
+document.getElementById("damage-form").addEventListener("reset", function() {
+    document.getElementById("damage-result").innerHTML = ""; // Effacer les résultats
+    document.getElementById("effect-rate-container").style.display = "none"; // Masquer le champ de taux d'effet
+});
+
+
+
+////// ONGLET 3 ////////
+// Gérer la logique de randomisation
+document.getElementById('cs-type').addEventListener('change', () => {
+    const selectedType = document.getElementById('cs-type').value;
+    
+    // Montre ou cache les champs custom pour l'option "Autre"
+    if (selectedType === 'autre') {
+        document.getElementById('custom-range').style.display = 'block';
+    } else {
+        document.getElementById('custom-range').style.display = 'none';
+    }
+});
+
+document.getElementById('generate-random').addEventListener('click', () => {
+    const selectedType = document.getElementById('cs-type').value;
+    let result = '';
+    let randomNum;
+
+    if (selectedType === 'coupe') {
+        randomNum = Math.floor(Math.random() * 100) + 1;
+        result += `Random tiré : ${randomNum}<br>`;
+
+        if (randomNum <= 40) { // Baies communes
+            const berries = ['Oran', 'Ceriz', 'Maron', 'Pecha', 'Fraive', 'Willia', 'Kika'];
+            const berryIndex = Math.floor(Math.random() * berries.length);
+            result += `Vous avez trouvé une baie commune : ${berries[berryIndex]}`;
+        } else if (randomNum <= 70) { // Baies peu communes
+            const uncommonBerries = ['Sitrus', 'Prine'];
+            const berryIndex = Math.floor(Math.random() * uncommonBerries.length);
+            result += `Vous avez trouvé une baie peu commune : ${uncommonBerries[berryIndex]}`;
+        } else if (randomNum <= 90) { // Baies rares
+            const rareBerries = ['Siam', 'Mangou', 'Rabuta', 'Tronci', 'Kiwan'];
+            const berryIndex = Math.floor(Math.random() * rareBerries.length);
+            result += `Vous avez trouvé une baie rare : ${rareBerries[berryIndex]}`;
+        } else { // Baies très rares
+            const veryRareBerries = ['Charti', 'Micle'];
+            const berryIndex = Math.floor(Math.random() * veryRareBerries.length);
+            result += `Vous avez trouvé une baie très rare : ${veryRareBerries[berryIndex]}`;
         }
 
-        // Calcul du bonus en fonction du PLPF du membre
-        let plpfBonus = 0;
-        if (plpfmembre >= 5 && plpfmembre <= 10) {
-            plpfBonus = 20;
-        } else if (plpfmembre > 10 && plpfmembre <= 15) {
-            plpfBonus = 15;
-        } else if (plpfmembre > 15 && plpfmembre <= 20) {
-            plpfBonus = 10;
+    } else if (selectedType === 'force') {
+        randomNum = Math.floor(Math.random() * 100) + 1;
+        result += `Random tiré : ${randomNum}<br>`;
+
+        if (randomNum <= 20) { // Objets inutilisables
+            result += 'Vous avez trouvé un objet inutilisable ou rien.';
+        } else if (randomNum <= 28) {
+            result += 'Vous avez trouvé une Potion.';
+        } else if (randomNum <= 36) {
+            result += 'Vous avez trouvé une Poké-Ball.';
+        } else if (randomNum <= 44) {
+            const items = ['Antidote', 'Anti-Para', 'Anti-Brûle', 'Anti-Gel', 'Réveil'];
+            const itemIndex = Math.floor(Math.random() * items.length);
+            result += `Vous avez trouvé : ${items[itemIndex]}`;
+        } else if (randomNum <= 51) {
+            result += 'Vous avez trouvé un Lait Meumeu.';
+        } else if (randomNum <= 58) {
+            result += 'Vous avez trouvé une Super-Potion.';
+        } else if (randomNum <= 64) {
+            result += 'Vous avez trouvé une Super-Ball.';
+        } else if (randomNum <= 70) {
+            result += 'Vous avez trouvé une Hyper-Potion.';
+        } else if (randomNum <= 76) {
+            result += 'Vous avez trouvé une Hyper-Ball.';
+        } else if (randomNum <= 82) {
+            result += 'Vous avez trouvé un Total-Soin.';
+        } else if (randomNum <= 88) {
+            result += 'Vous avez trouvé un Rappel.';
+        } else if (randomNum <= 94) {
+            result += 'Vous avez trouvé un Rappel Max.';
+        } else if (randomNum <= 97) {
+            result += 'Vous avez trouvé un Superbonbon.';
         } else {
-            plpfBonus = 0;
+            const stones = ['Soleil', 'Lune', 'Foudre', 'Eau', 'Feu', 'Plante', 'Glace', 'Pierre Stase'];
+            const stoneIndex = Math.floor(Math.random() * stones.length);
+            result += `Vous avez trouvé une Pierre d'évolution : ${stones[stoneIndex]}`;
         }
 
-        // Calcul du bonus de stade d'évolution
-        let stadeBonus = 0;
-        if (stadeEvo === 20) {
-            stadeBonus = 20; // Pokémon de base
-        } else if (stadeEvo === 10) {
-            stadeBonus = 10; // Pokémon stade 1 ou sans évolution
+    } else if (selectedType === 'eclate-roc') {
+        randomNum = Math.floor(Math.random() * 100) + 1;
+        result += `Random tiré : ${randomNum}<br>`;
+
+        if (randomNum <= 10) { // Objets de rareté 4
+            result += 'Vous avez trouvé une Potion.';
+        } else if (randomNum <= 20) {
+            result += 'Vous avez trouvé une Poké-Ball.';
+        } else if (randomNum <= 30) {
+            const items = ['Antidote', 'Anti-Para', 'Anti-Brûle', 'Anti-Gel', 'Réveil'];
+            const itemIndex = Math.floor(Math.random() * items.length);
+            result += `Vous avez trouvé : ${items[itemIndex]}`;
+        } else if (randomNum <= 39) {
+            result += 'Vous avez trouvé un Lait Meumeu.';
+        } else if (randomNum <= 48) {
+            result += 'Vous avez trouvé une Super-Potion.';
+        } else if (randomNum <= 56) {
+            result += 'Vous avez trouvé une Super-Ball.';
+        } else if (randomNum <= 64) {
+            result += 'Vous avez trouvé une Hyper-Potion.';
+        } else if (randomNum <= 72) {
+            result += 'Vous avez trouvé une Hyper-Ball.';
+        } else if (randomNum <= 80) {
+            result += 'Vous avez trouvé un Total-Soin.';
+        } else if (randomNum <= 86) {
+            result += 'Vous avez trouvé un Rappel.';
+        } else if (randomNum <= 92) {
+            result += 'Vous avez trouvé un Rappel Max.';
+        } else if (randomNum <= 96) {
+            result += 'Vous avez trouvé un Superbonbon.';
         } else {
-            stadeBonus = 0; // Pokémon stade 2
+            const stones = ['Soleil', 'Lune', 'Foudre', 'Eau', 'Feu', 'Plante', 'Glace', 'Pierre Stase'];
+            const stoneIndex = Math.floor(Math.random() * stones.length);
+            result += `Vous avez trouvé une Pierre d'évolution : ${stones[stoneIndex]}`;
         }
 
-        // Bonus médaille spécialiste
-        const medailleBonus = spetype; // Déjà récupéré avec la bonne valeur
+    } else if (selectedType === 'autre') {
+        const min = parseInt(document.getElementById('custom-min').value);
+        const max = parseInt(document.getElementById('custom-max').value);
 
-        // Bonus pour le nombre de balls utilisées
-        const balluseBonus = balluse * 5;
+        // Validation des entrées pour le random custom
+        if (!isNaN(min) && !isNaN(max) && min < max) {
+            randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+            result = `Le random entre ${min} et ${max} est : ${randomNum}`;
+        } else {
+            result = 'Veuillez entrer des valeurs valides pour le minimum et le maximum.';
+        }
+    }
 
-        // Calcul final du pourcentage de capture
-        let capture = typeball + plpfBonus + stadeBonus + medailleBonus + balluseBonus + niveauBonus;
+    // Affichage du résultat
+    document.getElementById('random-result').innerHTML = result;
+});
 
-        // Limitation du pourcentage de capture à des bornes raisonnables
-        capture = Math.max(0, Math.min(100, Math.floor(capture)));
+document.getElementById('clear-result').addEventListener('click', () => {
+    // Efface le résultat affiché
+    document.getElementById('random-result').innerHTML = '';
+});
 
-        // Lancer un tirage aléatoire entre 1 et 100
-        const randomValue = Math.floor(Math.random() * 100) + 1; // 1 à 100
+// Ensure the first tab is active on page load
+window.addEventListener('DOMContentLoaded', () => {
+    const firstTabButton = document.querySelector('.tab-button');
+    const firstTabContent = document.querySelector('.tab-content');
 
-        // Vérifier si la capture est réussie
-        const isSuccess = randomValue <= capture; // Si le tirage est inférieur ou égal au pourcentage
-
-        // Affichage des résultats
-        resultCapture.innerText = `Le pourcentage de capture est de ${capture} %\n` +
-            `Random entre 1 et 100 donne : ${randomValue}\n` +
-            (isSuccess
-                ? "Félicitations ! Le Pokémon est capturé !"
-                : "Pas de chance ! Il s'est échappé et semble vous défier de recommencer.");
-    });
-
-    // Réinitialisation des champs
-    resetButton.addEventListener("click", () => {
-        form.reset(); // Réinitialise tous les champs du formulaire
-        resultCapture.innerText = ""; // Efface le message de résultat
-    });
+    if (firstTabButton && firstTabContent) {
+        firstTabButton.classList.add('active');
+        firstTabContent.style.display = 'block';
+        firstTabContent.style.opacity = '1';  // Ensure smooth appearance
+    }
 });

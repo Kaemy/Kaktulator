@@ -9,57 +9,189 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
-<body data-theme="light"> <!-- Ajoutez l'attribut data-theme -->
+<body data-theme="dark">
     <div class="theme-toggle" id="theme-toggle">
-        <i id="dark-icon" class="fas fa-moon"></i> <!-- Icône pour le mode sombre -->
-        <i id="light-icon" class="fas fa-sun"></i> <!-- Icône pour le mode clair -->
+        <i id="dark-icon" class="fas fa-moon"></i>
+        <i id="light-icon" class="fas fa-sun"></i>
     </div>
+
     <div class="container_kapturator">
-        <div class="content">
-            <h2><img src="./img/ball1.gif" class="imgball"> Kapturator © <img src="./img/ball2.gif" class="imgball"></h2>
-            <div class="formKaptur">
-                <form name="kapturatorform">
-                    <label for="typeball">Type de ball utilisée :</label>
-                    <select name="typeball">
-                        <option value="20">Poké ball</option>
-                        <option value="35">Super ball</option>
-                        <option value="50">Hyper ball</option>
-                        <option value="60">Ball Spéciales</option>
-                    </select><br>
 
-                    <label for="PLPFmembre">Lvl. PLPF du membre :</label>
-                    <input type="number" name="PLPFmembre" value="" min="1" max="100"><br>
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'kapturator')" data-tab="kapturator">Kapturator</button>
+            <button class="tab-button" onclick="openTab(event, 'kaktulator')" data-tab="kaktulator">Kaktulator</button>
+            <button class="tab-button" onclick="openTab(event, 'randomizer')" data-tab="randomizer">Random CS & autres</button>
+        </div>
 
-                    <label for="NivWild">Lvl. du pokémon sauvage :</label>
-                    <input type="number" name="NivWild" value="" min="1" max="100"><br>
-
-                    <label for="StadeEvo">Stade d'évolution :</label>
-                    <select name="StadeEvo">
-                        <option value="20">Pokémon de base</option>
-                        <option value="10">Stade 1 ou sans évolution</option>
-                        <option value="0">Stade 2</option>
-                    </select><br>
-
-                    <label for="Spetype">Médaille de spécialiste :</label>
-                    <select name="Spetype">
-                        <option value="0">Pas de médaille</option>
-                        <option value="2">Médaille de Bronze</option>
-                        <option value="4">Médaille d'Argent</option>
-                        <option value="6">Médaille d'Or</option>
-                        <option value="8">Médaille de Platine</option>
-                    </select><br>
-
-                    <label for="BallUse">Nombre de ball déjà utilisées :</label>
-                    <input type="number" name="BallUse" value="0" min="0"><br>
+        <div class="tab-content" id="kapturator">
+            <h2>
+                <img src="./img/ball1.gif" class="imgball"> Kapturator © <img src="./img/ball2.gif" class="imgball">
+            </h2>
+            <div id="kapturator-container">
+                <form id="kapturator-form"> <!-- Changement d'ID ici -->
+                    <div class="input-container">
+                        <label for="typeball">Type de ball utilisée :</label>
+                        <select id="typeball" name="typeball"> <!-- Ajout de l'ID -->
+                            <option value="20">Poké ball</option>
+                            <option value="35">Super ball</option>
+                            <option value="50">Hyper ball</option>
+                            <option value="60">Ball Spéciales</option>
+                        </select>
+                    </div>
+        
+                    <div class="input-container">
+                        <label for="PLPFmembre">Lvl. PLPF du membre :</label>
+                        <input type="number" id="PLPFmembre" name="PLPFmembre" min="1" max="100"> <!-- Ajout de l'ID -->
+                    </div>
+        
+                    <div class="input-container">
+                        <label for="NivWild">Lvl. du pokémon sauvage :</label>
+                        <input type="number" id="NivWild" name="NivWild" min="1" max="100"> <!-- Ajout de l'ID -->
+                    </div>
+        
+                    <div class="input-container">
+                        <label for="StadeEvo">Stade d'évolution :</label>
+                        <select id="stadeEvo" name="StadeEvo"> <!-- Ajout de l'ID -->
+                            <option value="20">Pokémon de base</option>
+                            <option value="10">Stade 1 ou sans évolution</option>
+                            <option value="0">Stade 2</option>
+                        </select>
+                    </div>
+        
+                    <div class="input-container">
+                        <label for="Spetype">Médaille de spécialiste :</label>
+                        <select id="Spetype" name="Spetype"> <!-- Ajout de l'ID -->
+                            <option value="0">Pas de médaille</option>
+                            <option value="2">Médaille de Bronze</option>
+                            <option value="4">Médaille d'Argent</option>
+                            <option value="6">Médaille d'Or</option>
+                            <option value="8">Médaille de Platine</option>
+                        </select>
+                    </div>
+        
+                    <div class="input-container">
+                        <label for="BallUse">Nombre de ball déjà utilisées :</label>
+                        <input type="number" id="BallUse" name="BallUse" value="0" min="0"> <!-- Ajout de l'ID -->
+                    </div>
                 </form>
-
+        
                 <div class="button-group">
                     <button id="generer" class="styled-button">Calculer</button>
                     <button id="effacer" class="styled-button">Effacer</button>
                 </div>
+        
+                <div id="kapturator-result"></div>
             </div>
+        </div>
+        
 
-            <p id="resultcapture"></p>
+        <div class="tab-content" id="kaktulator">
+            <h2>Kaktulator</h2>
+            <div id="kaktulator-container">
+                <form id="damage-form">
+                    <div class="input-container">
+                        <label for="level">Niveau du lanceur :</label>
+                        <input type="number" id="level" min="1" max="100" placeholder="Niveau de l'attaquant" required>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="attack">Attaque du lanceur :</label>
+                        <input type="number" id="attack" min="1" placeholder="Attaque du lanceur" required>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="power">Puissance de l'attaque :</label>
+                        <input type="number" id="power" min="1" placeholder="Puissance de l'attaque" required>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="accuracy">Précision de l'attaque :</label>
+                        <input type="number" id="accuracy" min="1" max="100" value="100" required>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="effect">Effet secondaire :</label>
+                        <select id="effect" required>
+                            <option value="none">Aucun</option>
+                            <option value="burn">Brûlure</option>
+                            <option value="paralysis">Paralysie</option>
+                            <option value="poison">Empoisonnement</option>
+                            <option value="fear">Peur</option>
+                            <option value="freeze">Gel</option>
+                            <option value="confusion">Confusion</option>
+                        </select>
+                    </div>
+
+                    <div class="input-container" id="effect-rate-container" style="display:none;">
+                        <label for="effect-rate">Taux de l'effet (%):</label>
+                        <input type="number" id="effect-rate" min="0" max="100" value="0" required>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="defense">Défense du receveur :</label>
+                        <input type="number" id="defense" min="1" placeholder="Défense du receveur" required>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="resistance">Résistance :</label>
+                        <select id="resistance" required>
+                            <option value="0">Immunité (x0)</option>
+                            <option value="0.25">Double résistance (x1/4)</option>
+                            <option value="0.5">Résistance (x1/2)</option>
+                            <option value="1" selected>Neutre (x1)</option>
+                            <option value="2">Faiblesse (x2)</option>
+                            <option value="4">Double faiblesse (x4)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-container">
+                        <label for="critical-rate">Taux de coup critique :</label>
+                        <select id="critical-rate" required>
+                            <option value="0.0417">Taux normal (4,17%)</option>
+                            <option value="0.125">Taux élevé (12,5%)</option>
+                            <option value="0.5">Taux augmenté de 2 niveaux (50%)</option>
+                            <option value="1">Coup critique garanti (100%)</option>
+                            <option value="0">Pas de coup critique possible (0%)</option>
+                        </select>
+                    </div>
+
+                    <div id="button-container" class="button-group">
+                        <button type="submit" class="styled-button">Calculer les PV perdus</button>
+                        <button type="reset" class="styled-button">Réinitialiser</button>
+                    </div>
+                </form>
+                <div id="damage-result"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="randomizer">
+            <h2>Randomiseur</h2>
+            <div id="randomizer-container">
+                <div class="input-container">
+                    <label for="cs-type">Choisissez le type :</label>
+                    <select id="cs-type">
+                        <option value="coupe">CS Coupe</option>
+                        <option value="force">CS Force</option>
+                        <option value="eclate-roc">CS Éclate-Roc</option>
+                        <option value="autre">Autre</option>
+                    </select> 
+                </div>
+
+                <div class="input-container2">
+                    <div id="custom-range" style="display: none;">
+                        <input type="number" id="custom-min" value="1" placeholder="Minimum">
+                        <input type="number" id="custom-max" value="100" placeholder="Maximum">
+                    </div>
+                </div>
+
+                <!-- Conteneur centré pour les boutons -->
+                <div id="button-container" class="button-group">
+                    <button id="generate-random" class="styled-button">Générer un random</button>
+                    <button id="clear-result" class="styled-button">Effacer le résultat</button>
+                </div>
+
+                <div id="random-result"></div>
+            </div>
         </div>
     </div>
 
