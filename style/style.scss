@@ -348,8 +348,11 @@ body[data-theme="dark"] {
     }
 
     .theme-toggle {
-        top: 2px;
-        right: 5px;  
+        top: 5px;
+        
+        i {
+            font-size: 18px;
+        }
     }
 
     h2 {
