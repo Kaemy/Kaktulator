@@ -298,6 +298,10 @@ body[data-theme=dark] #resultcapture {
     width: 100%;
     padding: 10px;
   }
+  .theme-toggle {
+    top: 2px;
+    right: 5px;
+  }
   h2 {
     font-size: 1.5rem;
     margin-bottom: 10px;
