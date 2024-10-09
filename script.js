@@ -90,7 +90,8 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Logique de calcul
+// Calcul de la capture de pokémons
+
 document.getElementById('generer').addEventListener('click', () => {
     // Récupération des valeurs
     const typeBall = parseInt(document.getElementById("typeball").value);
@@ -108,31 +109,47 @@ document.getElementById('generer').addEventListener('click', () => {
         return; // Arrête le calcul ici si les valeurs ne sont pas valides
     }
 
-    // Vérifier si le niveau du Pokémon sauvage est supérieur au PLPF du membre de 6 niveaux ou plus
-    if (NivWild >= PLPFmembre + 6) {
-        document.getElementById('kapturator-result').innerHTML = `
-            La capture du Pokémon échoue car il est trop puissant par rapport à votre niveau.
-        `;
-        return; // Arrête le calcul ici si la capture échoue automatiquement
+    // Calcul de la différence de niveaux
+    let niveauDiff = NivWild - PLPFmembre; // Différence entre le niveau du Pokémon sauvage et le membre
+
+    // Vérification des bonus ou de l'échec automatique selon la différence de niveaux
+    let niveauBonus = 0;
+    if (niveauDiff >= 6) {
+        // Échec automatique si la différence de niveau est supérieure ou égale à 6
+        document.getElementById('kapturator-result').textContent = "La capture échoue : Le niveau du Pokémon sauvage est trop élevé.";
+        return;
+    } else if (niveauDiff >= 4 && niveauDiff <= 5) {
+        niveauBonus = -5; // Sauvage PLPF +4 jusqu'à +5
+    } else if (niveauDiff >= 0 && niveauDiff <= 3) {
+        niveauBonus = 0; // Sauvage PLPF +0 jusqu'à +3
+    } else if (niveauDiff >= -10 && niveauDiff <= -1) {
+        niveauBonus = 5; // Sauvage PLPF -1 jusqu'à -10
+    } else if (niveauDiff >= -20 && niveauDiff <= -11) {
+        niveauBonus = 10; // Sauvage PLPF -11 jusqu'à -20
+    } else {
+        niveauBonus = 15; // Sauvage PLPF -21 ou plus
     }
 
-    // Formule de calcul
-    let result = (PLPFmembre + typeBall + NivWild - stadeEvo + Spetype) - ballUse;
+    // Calcul final de la capture avec les bonus
+    let captureChance = typeBall + stadeEvo + Spetype + niveauBonus - ballUse;
 
-    // Limitation de la chance de capture à 100%
-    result = Math.min(result, 100);
+    // Limiter le pourcentage à 100% maximum
+    captureChance = Math.min(100, Math.max(0, captureChance));
 
-    // Affichage du résultat de la chance de capture
-    const randomValue = Math.floor(Math.random() * 100) + 1; // Tirage aléatoire entre 1 et 100
-    const captureSuccess = randomValue <= result; // Détermine si la capture réussit
+    // Tirage random entre 1 et 100
+    const randomTirage = Math.floor(Math.random() * 100) + 1;
 
-    // Affichage des résultats
+    // Vérification du succès de la capture
+    let resultatCapture = randomTirage <= captureChance ? "Félicitations ! Le Pokémon est capturé !" : "Pas de chance, le Pokémon s'est échappé.";
+
+    // Affichage du résultat
     document.getElementById('kapturator-result').innerHTML = `
-        Chance de capture : ${result}%<br>
-        Tirage aléatoire pour la capture : ${randomValue}<br><br>
-        ${captureSuccess ? 'Félicitations ! Le Pokémon est capturé !' : 'Pas de chance ! Le Pokémon s\'est échappé.'}
+        Chance de capture : ${captureChance}%<br>
+        Tirage : ${randomTirage}<br>
+        ${resultatCapture}
     `;
 });
+
 
 // Logique d'effacement
 document.getElementById('effacer').addEventListener('click', () => {
