@@ -104,6 +104,30 @@
                     </div>
 
                     <div class="input-container">
+                        <label for="attack-type">Type de l'attaque :</label>
+                        <select id="attack-type" required>
+                            <option value="normal">Normal</option>
+                            <option value="fire">Feu</option>
+                            <option value="water">Eau</option>
+                            <option value="grass">Plante</option>
+                            <option value="electric">Électrique</option>
+                            <option value="ice">Glace</option>
+                            <option value="fighting">Combat</option>
+                            <option value="poison">Poison</option>
+                            <option value="ground">Sol</option>
+                            <option value="flying">Vol</option>
+                            <option value="psychic">Psy</option>
+                            <option value="bug">Insecte</option>
+                            <option value="rock">Roche</option>
+                            <option value="ghost">Spectre</option>
+                            <option value="dragon">Dragon</option>
+                            <option value="dark">Ténèbres</option>
+                            <option value="steel">Acier</option>
+                            <option value="fairy">Fée</option>
+                        </select>
+                    </div>
+
+                    <div class="input-container">
                         <label for="accuracy">Précision de l'attaque :</label>
                         <input type="number" id="accuracy" min="1" max="100" value="100" required>
                     </div>
@@ -130,18 +154,56 @@
                         <label for="defense">Défense du receveur :</label>
                         <input type="number" id="defense" min="1" placeholder="Défense du receveur" required>
                     </div>
-
+                    
                     <div class="input-container">
-                        <label for="resistance">Résistance :</label>
-                        <select id="resistance" required>
-                            <option value="0">Immunité (x0)</option>
-                            <option value="0.25">Double résistance (x1/4)</option>
-                            <option value="0.5">Résistance (x1/2)</option>
-                            <option value="1" selected>Neutre (x1)</option>
-                            <option value="2">Faiblesse (x2)</option>
-                            <option value="4">Double faiblesse (x4)</option>
+                        <label for="defense-type1">Type 1 du défenseur :</label>
+                        <select id="defense-type1" required>
+                            <!-- Liste des types -->
+                            <option value="normal">Normal</option>
+                            <option value="fire">Feu</option>
+                            <option value="water">Eau</option>
+                            <option value="grass">Plante</option>
+                            <option value="electric">Électrique</option>
+                            <option value="ice">Glace</option>
+                            <option value="fighting">Combat</option>
+                            <option value="poison">Poison</option>
+                            <option value="ground">Sol</option>
+                            <option value="flying">Vol</option>
+                            <option value="psychic">Psy</option>
+                            <option value="bug">Insecte</option>
+                            <option value="rock">Roche</option>
+                            <option value="ghost">Spectre</option>
+                            <option value="dragon">Dragon</option>
+                            <option value="dark">Ténèbres</option>
+                            <option value="steel">Acier</option>
+                            <option value="fairy">Fée</option>
                         </select>
                     </div>
+                    
+                    <div class="input-container">
+                        <label for="defense-type2">Type 2 du défenseur (optionnel) :</label>
+                        <select id="defense-type2">
+                            <option value="">Aucun</option>
+                            <option value="normal">Normal</option>
+                            <option value="fire">Feu</option>
+                            <option value="water">Eau</option>
+                            <option value="grass">Plante</option>
+                            <option value="electric">Électrique</option>
+                            <option value="ice">Glace</option>
+                            <option value="fighting">Combat</option>
+                            <option value="poison">Poison</option>
+                            <option value="ground">Sol</option>
+                            <option value="flying">Vol</option>
+                            <option value="psychic">Psy</option>
+                            <option value="bug">Insecte</option>
+                            <option value="rock">Roche</option>
+                            <option value="ghost">Spectre</option>
+                            <option value="dragon">Dragon</option>
+                            <option value="dark">Ténèbres</option>
+                            <option value="steel">Acier</option>
+                            <option value="fairy">Fée</option>
+                        </select>
+                    </div>                    
 
                     <div class="input-container">
                         <label for="critical-rate">Taux de coup critique :</label>
@@ -197,3 +259,8 @@
 </body>
 
 </html>
+
+<!-- Fonctionnalitées à ajouter
+ - Calcul des augmentations / diminutions de stats
+ - Calcul des dégâts de fin de tour
+ - Calcul des effets de terrain ??  -->

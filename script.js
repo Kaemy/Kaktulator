@@ -160,6 +160,44 @@ document.getElementById('effacer').addEventListener('click', () => {
 
 
 ////// ONGLET 2 ////////
+// Table des types de la Génération 9 (simplifié)
+const typeChart = {
+    normal: { rock: 0.5, ghost: 0, steel: 0.5 },
+    fire: { fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2 },
+    water: { fire: 2, water: 0.5, grass: 0.5, ground: 2, rock: 2, dragon: 0.5 },
+    grass: { fire: 0.5, water: 2, grass: 0.5, poison: 0.5, ground: 2, flying: 0.5, bug: 0.5, rock: 2, dragon: 0.5, steel: 0.5 },
+    electric: { electric: 0.5, flying: 2, water: 2, ground: 0 },
+    ice: { fire: 0.5, water: 1, grass: 1, ice: 0.5, ground: 2, flying: 2, dragon: 2, steel: 0.5 },
+    fighting: { normal: 2, ice: 2, rock: 2, dark: 2, steel: 1, flying: 0.5, psychic: 0.5, fairy: 0.5 },
+    poison: { grass: 2, fairy: 2, poison: 0.5, ground: 1, rock: 1 },
+    ground: { fire: 2, electric: 1, grass: 0.5, water: 1, poison: 1, rock: 2 },
+    flying: { fighting: 2, bug: 2, grass: 1, electric: 0.5, rock: 0.5, steel: 0.5 },
+    psychic: { fighting: 2, poison: 2, psychic: 0.5, bug: 0.5, ghost: 1, dark: 0.5 },
+    bug: { grass: 2, psychic: 1, dark: 1, fire: 0.5, fighting: 0.5, flying: 0.5, ghost: 1, fairy: 0.5, rock: 0.5 },
+    rock: { normal: 1, fire: 1, fighting: 0.5, flying: 2, bug: 1, ice: 1, poison: 1, ground: 1, steel: 0.5 },
+    ghost: { normal: 0, fighting: 0.5, poison: 1, bug: 1, ghost: 2, dark: 1 },
+    dragon: { dragon: 2, steel: 0.5, fairy: 0 },
+    dark: { ghost: 2, psychic: 2, fighting: 0.5, dark: 1, fairy: 0.5 },
+    steel: { normal: 1, fire: 0.5, water: 0.5, electric: 1, ice: 1, rock: 1, fairy: 2, steel: 0.5 },
+    fairy: { fighting: 2, dark: 2, dragon: 1, steel: 0.5, poison: 0.5, fairy: 1 },
+};
+
+function calculateTypeEffectiveness(attackType, defenseType1, defenseType2 = '') {
+    let multiplier = 1;
+
+    // Appliquer le multiplicateur pour le premier type défensif
+    if (typeChart[attackType] && typeChart[attackType][defenseType1]) {
+        multiplier *= typeChart[attackType][defenseType1];
+    }
+
+    // Appliquer le multiplicateur pour le deuxième type défensif, s'il existe
+    if (defenseType2 && typeChart[attackType] && typeChart[attackType][defenseType2]) {
+        multiplier *= typeChart[attackType][defenseType2];
+    }
+
+    return multiplier;
+}
+
 document.getElementById("damage-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -168,10 +206,17 @@ document.getElementById("damage-form").addEventListener("submit", function(event
     const attack = parseInt(document.getElementById("attack").value);
     const power = parseInt(document.getElementById("power").value);
     const defense = parseInt(document.getElementById("defense").value);
-    const resistance = parseFloat(document.getElementById("resistance").value);
     const criticalRate = parseFloat(document.getElementById("critical-rate").value);
     const accuracy = parseInt(document.getElementById("accuracy").value);
     const effect = document.getElementById("effect").value;
+
+    // Récupérer les types
+    const attackType = document.getElementById("attack-type").value;
+    const defenseType1 = document.getElementById("defense-type1").value;
+    const defenseType2 = document.getElementById("defense-type2").value;
+
+    // Calcul de l'efficacité du type
+    const typeMultiplier = calculateTypeEffectiveness(attackType, defenseType1, defenseType2);
 
     // Gestion de l'affichage du taux de l'effet
     const effectRate = effect !== "none" ? parseInt(document.getElementById("effect-rate").value) : 0;
@@ -252,17 +297,26 @@ document.getElementById("damage-form").addEventListener("submit", function(event
         }
     }
 
-    // Appliquer la formule des dégâts
-    let damage = ((((level * 2 / 5 + 2) * attack * power / defense) / 50) + 2) * resistance * criticalMultiplier;
+     // Formule de calcul des dégâts (simplifiée avec multiplicateur de type)
+     let damage = ((((level * 2 / 5 + 2) * attack * power / defense) / 50) + 2) * typeMultiplier * criticalMultiplier;
 
-    // Arrondir les dégâts correctement
-    damage = Math.round(damage);  // Arrondit selon les règles classiques
+     // Arrondir au supérieur pour des .5 ou plus
+     damage = Math.round(damage);
+ 
+     // Message d'efficacité
+        let effectivenessMessage = '';
+        if (typeMultiplier > 1) {
+            effectivenessMessage = "<i>C'est super efficace !</i>";
+        } else if (typeMultiplier < 1) {
+            effectivenessMessage = "<i>Ce n'est pas très efficace...</i>";
+        }
 
     // Afficher le résultat
     resultDiv.innerHTML += `
         ${criticalMessage}
         ${effectMessage}<br>
-        PV perdus : ${Math.max(0, Math.floor(damage))}
+        PV perdus : ${Math.max(0, Math.floor(damage))}<br>
+        ${effectivenessMessage}
     `;
 });
 
