@@ -145,7 +145,7 @@ document.getElementById('generer').addEventListener('click', () => {
     // Affichage du résultat
     document.getElementById('kapturator-result').innerHTML = `
         Chance de capture : ${captureChance}%<br>
-        Tirage : ${randomTirage}<br>
+        Random : ${randomTirage}<br>
         ${resultatCapture}
     `;
 });
