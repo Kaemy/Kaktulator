@@ -108,17 +108,17 @@ body {
     .button-group {
         display: flex;
         justify-content: center;
-        gap: 20px; // Adjusted spacing between buttons
-        margin-top: 10px;
+        gap: 20px;
+        margin: 20px;
     }
 
     .styled-button {
-        padding: 12px 25px; // Increased button size
+        padding: 5px 20px; // Increased button size
         border-radius: 50px;
         background-color: $primary-color;
         color: white;
         border: none;
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: bold;
         cursor: pointer;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
@@ -190,38 +190,24 @@ body[data-theme="dark"] {
     }
 }
 
-// ONGLET 1 - KAPTURATOR
-#kapturator-container {
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 600px;
-    margin: 0 auto;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-#kapturator-form {
-    display: flex;
-    flex-direction: column;
-}
-
 .input-container {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .input-container label {
-    flex: 1;
+    flex: 3;
     margin-right: 20px;
-    font-size: 1.1em;
+    font-size: 1em;
     font-weight: bold;
-    text-align: right;
+    text-align: left;
 }
 
 .input-container input,
 .input-container select {
-    flex: 1;
-    padding: 10px;
+    flex: 3;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1em;
@@ -231,14 +217,14 @@ body[data-theme="dark"] {
 .input-container2 {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     justify-content: space-around;
 }
 
 .input-container2 label {
     flex: 1;
     margin-right: 20px;
-    font-size: 1.1em;
+    font-size: 1em;
     font-weight: bold;
     text-align: right;
 }
@@ -251,6 +237,20 @@ body[data-theme="dark"] {
     border-radius: 4px;
     font-size: 1em;
     transition: border 0.3s;
+}
+
+// ONGLET 1 - KAPTURATOR
+#kapturator-container {
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#kapturator-form {
+    display: flex;
+    flex-direction: column;
 }
 
 #kapturator-result {
@@ -274,30 +274,6 @@ body[data-theme="dark"] {
 #damage-form {
     display: flex;
     flex-direction: column;
-}
-
-.input-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.input-container label {
-    flex: 1;
-    margin-right: 20px;
-    font-size: 1.1em;
-    font-weight: bold;
-    text-align: right;
-}
-
-.input-container input,
-.input-container select {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    transition: border 0.3s;
 }
 
 #damage-result {
